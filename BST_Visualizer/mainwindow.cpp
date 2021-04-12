@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     QBrush brush(grad);
     scene->addRect(Rec, redpen, brush);
 
-    root = new BinaryTreeGraphic(this, 5);
+    root = new BinaryTreeGraphic(this, 454);
     connect(ui->insertButton, SIGNAL(clicked()), root,
             SLOT(insert_node( (qreal) (ui->lineEdit_insert.text()) ))
             );
