@@ -19,6 +19,11 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="insertButton">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="cursor">
          <cursorShape>OpenHandCursor</cursorShape>
         </property>
@@ -32,6 +37,11 @@
       </item>
       <item>
        <widget class="QPushButton" name="deleteButton">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="cursor">
          <cursorShape>OpenHandCursor</cursorShape>
         </property>
@@ -45,6 +55,11 @@
       </item>
       <item>
        <widget class="QPushButton" name="searchButton">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="cursor">
          <cursorShape>OpenHandCursor</cursorShape>
         </property>
@@ -140,7 +155,7 @@
            <widget class="QPushButton" name="BFTButton">
             <property name="font">
              <font>
-              <pointsize>9</pointsize>
+              <pointsize>10</pointsize>
              </font>
             </property>
             <property name="cursor">
@@ -167,7 +182,7 @@
            <widget class="QPushButton" name="PreOrderButton">
             <property name="font">
              <font>
-              <pointsize>9</pointsize>
+              <pointsize>10</pointsize>
              </font>
             </property>
             <property name="cursor">
@@ -185,7 +200,7 @@
            <widget class="QPushButton" name="InOrderButton">
             <property name="font">
              <font>
-              <pointsize>9</pointsize>
+              <pointsize>10</pointsize>
              </font>
             </property>
             <property name="cursor">
@@ -203,7 +218,7 @@
            <widget class="QPushButton" name="PostOrderButton">
             <property name="font">
              <font>
-              <pointsize>9</pointsize>
+              <pointsize>10</pointsize>
              </font>
             </property>
             <property name="cursor">
