@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     QBrush brush(grad);
     scene->addRect(Rec, redpen, brush);
 
+<<<<<<< HEAD
     root = new BinaryTreeGraphic(this, 454);
     connect(ui->insertButton, SIGNAL(clicked()), root,
             SLOT(insert_node( (qreal) (ui->lineEdit_insert.text()) ))
@@ -34,8 +35,21 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->insertButton, SIGNAL(clicked()), root,
             SLOT(search_node( (qreal) (ui->lineEdit_search.text()) ))
             );
+=======
+    root = new BinaryTreeGraphic(this, 5);
+>>>>>>> 16fdaf6423cd57889cecbfa198a4118de69668cb
 
+    connect(ui->insertButton, SIGNAL(clicked()), root, SLOT(insert_node((qreal)(ui->lineEdit_insert.text()))));
+    connect(ui->deleteButton, SIGNAL(clicked()), root, SLOT(delete_node((qreal)(ui->lineEdit_delete.text()))));
+    connect(ui->searchButton, SIGNAL(clicked()), root, SLOT(search_node((qreal)(ui->lineEdit_search.text()))));
+    connect(ui->PreOrderButton, SIGNAL(clicked()), root, SLOT(DFTPreOrder()));
+    connect(ui->BFTButton, SIGNAL(clicked()), root, SLOT(BFT()));
+    connect(ui->InOrderButton, SIGNAL(clicked()), root, SLOT(DFTInOrder()));
+    connect(ui->PostOrderButton, SIGNAL(clicked()), root, SLOT(DFTPostOrder()));
+
+    root->get_graphic()->setPos(mapToParent(QPoint(0,0)));
     scene->addItem(root->get_graphic());
+
 }
 
 MainWindow::~MainWindow()
