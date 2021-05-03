@@ -23,20 +23,20 @@ MainWindow::MainWindow(QWidget *parent)
     grad.setColorAt(1.0, Qt::lightGray);
     QBrush brush(grad);
     scene->addRect(Rec, redpen, brush);
-
+    
+    root = new BinaryTreeGraphic(this, 454);
+    connect(ui->insertButton, SIGNAL(clicked()), root,
+            SLOT(insert_node( (qreal) (ui->lineEdit_insert.text()) ))
+            );
+    connect(ui->deleteButton, SIGNAL(clicked()), root,
+            SLOT(delete_node( (qreal) (ui->lineEdit_delete.text()) ))
+            );
+    connect(ui->insertButton, SIGNAL(clicked()), root,
+            SLOT(search_node( (qreal) (ui->lineEdit_search.text()) ))
+            );
     root = new BinaryTreeGraphic(this, 5);
 
-    connect(ui->insertButton, SIGNAL(clicked()), root, SLOT(insert_node((qreal)(ui->lineEdit_insert.text()))));
-    connect(ui->deleteButton, SIGNAL(clicked()), root, SLOT(delete_node((qreal)(ui->lineEdit_delete.text()))));
-    connect(ui->searchButton, SIGNAL(clicked()), root, SLOT(search_node((qreal)(ui->lineEdit_search.text()))));
-    connect(ui->PreOrderButton, SIGNAL(clicked()), root, SLOT(DFTPreOrder()));
-    connect(ui->BFTButton, SIGNAL(clicked()), root, SLOT(BFT()));
-    connect(ui->InOrderButton, SIGNAL(clicked()), root, SLOT(DFTInOrder()));
-    connect(ui->PostOrderButton, SIGNAL(clicked()), root, SLOT(DFTPostOrder()));
-
-    root->get_graphic()->setPos(mapToParent(QPoint(0,0)));
     scene->addItem(root->get_graphic());
-
 }
 
 MainWindow::~MainWindow()
