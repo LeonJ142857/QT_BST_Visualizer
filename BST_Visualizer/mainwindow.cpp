@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     grad.setColorAt(1.0, Qt::lightGray);
     QBrush brush(grad);
     scene->addRect(Rec, redpen, brush);
-
+    
     root = new BinaryTreeGraphic(this, 454);
     connect(ui->insertButton, SIGNAL(clicked()), root,
             SLOT(insert_node( (qreal) (ui->lineEdit_insert.text()) ))
@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->insertButton, SIGNAL(clicked()), root,
             SLOT(search_node( (qreal) (ui->lineEdit_search.text()) ))
             );
+    root = new BinaryTreeGraphic(this, 5);
 
     scene->addItem(root->get_graphic());
 }
