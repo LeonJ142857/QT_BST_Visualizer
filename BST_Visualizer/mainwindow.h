@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "graphic.h"
 #include "binarytreegraphic.h"
 #include <QLinearGradient>
 #include <vector>
@@ -21,6 +20,11 @@ public:
 
 private slots:
     void on_BFTButton_2_clicked();
+    void on_insertButton_clicked();
+    void on_deleteButton_clicked();
+    void on_searchButton_clicked();
+    void on_bt_refresh_clicked();
+    void on_bt_reset_clicked();
 
 private:
     Ui::MainWindow *ui;

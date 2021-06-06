@@ -1,5 +1,6 @@
 #include "binarytreegraphic.h"
 #include <algorithm>
+#include <user.h>
 
 using namespace std;
 

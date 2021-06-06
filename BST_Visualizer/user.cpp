@@ -4,6 +4,7 @@
 #include <fstream>
 #include <binarytreegraphic.h>
 #include <QApplication>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -76,7 +77,7 @@ QPixmap User::createTree(vector<int> arr){
 //        }
 //    }
 
-//    User::writeToFile(data);
+//    User::
 
     cout << "Number of nodes which have only left child: " << tree->countLeftNodes() << endl;
     cout << "Tree height: " << tree->countLevels() << endl;
@@ -87,10 +88,59 @@ QPixmap User::createTree(vector<int> arr){
     tree->inorderWalk();
     tree->postorderWalk();
 
-    cout << "Delete node: ";
-    if (tree->deleteNode(7) == -1)
-        cout << "Could not find element [user_input], delete process has been terminated" << endl;
+//    cout << "Delete node: ";
+//    if (tree->deleteNode(7) == -1)
+//        cout << "Could not find element [user_input], delete process has been terminated" << endl;
 //    a->show();
 
+    writeToFile(arr);
     return tree->show();
+}
+
+QPixmap User::deleteNode(int val){
+    QGraphicsScene scene;
+    QGraphicsView view(&scene);
+
+    view.setRenderHints(QPainter::SmoothPixmapTransform);
+
+    BinaryTreeGraphic* tree = new BinaryTreeGraphic();
+    tree->init(&scene, &view);
+
+    vector<int> currentTree = readFile();
+    for(int i : currentTree)
+        tree->insert(i);
+    int delNode = tree->deleteNode(val);
+    if(delNode == -1){
+        return tree->show();
+    } else {
+        QMessageBox::information(NULL, "Information", "Element was not found. Delete operation has been aborted.");
+        writeToFile(currentTree);
+        return tree->show();
+    }
+}
+
+QPixmap User::refreshTree(){
+    vector<int> tree_nodes = readFile();
+    if (tree_nodes.empty()){
+        tree_nodes.push_back(0);
+        return createTree(tree_nodes);
+    } else {
+        return createTree(tree_nodes);
+    }
+}
+
+QPixmap User::refreshTree(int val){
+    vector<int> tree_nodes = readFile();
+    if (std::find(tree_nodes.begin(), tree_nodes.end(), val) != tree_nodes.end())
+        QMessageBox::information(NULL, "Information", "Element is already present in the tree. BST does not allow duplicate elements");
+    else
+        tree_nodes.push_back(val);
+    return createTree(tree_nodes);
+}
+
+QPixmap User::resetTree(){
+    vector<int> reset;
+    return createTree(reset);
+    // create new instance of binarytreegraphic then return it with empty tree;
+    // apparently empty vector results in 0 being added into the tree;
 }
