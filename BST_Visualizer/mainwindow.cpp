@@ -1,5 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QMessageBox>
+#include <QString>
+#include <binarytreegraphic.h>
+#include <user.h>
+#include <vector>
+
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -8,39 +15,26 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
-    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
-    scene->setSceneRect(-1000, -1000, 2000, 2000);
-
-    const QPointF SCENE_TOP_LEFT = QPointF(scene->sceneRect().topLeft());
-    const qreal WIDTH = scene->sceneRect().width();
-    const qreal HEIGHT = scene->sceneRect().height();
-
-    QRectF Rec(SCENE_TOP_LEFT.x(), SCENE_TOP_LEFT.y(), WIDTH, HEIGHT);
-    QPen redpen = QPen(Qt::red, 7);
-    QLinearGradient grad(0, 0, 2000, 2000);
-
-    grad.setColorAt(0.0, Qt::white);
-    grad.setColorAt(1.0, Qt::lightGray);
-    QBrush brush(grad);
-    scene->addRect(Rec, redpen, brush);
-    
-    root = new BinaryTreeGraphic(this, 454);
-    connect(ui->insertButton, SIGNAL(clicked()), root,
-            SLOT(insert_node( (qreal) (ui->lineEdit_insert.text()) ))
-            );
-    connect(ui->deleteButton, SIGNAL(clicked()), root,
-            SLOT(delete_node( (qreal) (ui->lineEdit_delete.text()) ))
-            );
-    connect(ui->insertButton, SIGNAL(clicked()), root,
-            SLOT(search_node( (qreal) (ui->lineEdit_search.text()) ))
-            );
-    root = new BinaryTreeGraphic(this, 5);
-
-    scene->addItem(root->get_graphic());
+    ui->graphicsView->setRenderHint(QPainter::SmoothPixmapTransform);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
+void MainWindow::on_BFTButton_2_clicked()
+{
+    QString input = ui->tree_size->text();
+    int nodes = input.toInt();
+
+    cout << nodes;
+
+    vector<int> tree = BinaryTreeGraphic::generateTree(nodes);
+    QPixmap pixmap = User::createTree(tree);
+    this->scene->clear();
+    this->scene->addPixmap(pixmap);
+}
+
 

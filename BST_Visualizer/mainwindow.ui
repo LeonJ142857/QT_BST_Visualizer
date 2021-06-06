@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>659</width>
-    <height>621</height>
+    <height>276</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -72,7 +72,7 @@
           <item>
            <widget class="QPushButton" name="insertButton">
             <property name="cursor">
-             <cursorShape>OpenHandCursor</cursorShape>
+             <cursorShape>ArrowCursor</cursorShape>
             </property>
             <property name="text">
              <string>Insert</string>
@@ -85,7 +85,7 @@
           <item>
            <widget class="QPushButton" name="deleteButton">
             <property name="cursor">
-             <cursorShape>OpenHandCursor</cursorShape>
+             <cursorShape>ArrowCursor</cursorShape>
             </property>
             <property name="text">
              <string>Delete</string>
@@ -98,7 +98,7 @@
           <item>
            <widget class="QPushButton" name="searchButton">
             <property name="cursor">
-             <cursorShape>OpenHandCursor</cursorShape>
+             <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="text">
              <string>Search</string>
@@ -353,6 +353,9 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="BFTButton_2">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
@@ -371,13 +374,13 @@
                    </font>
                   </property>
                   <property name="cursor">
-                   <cursorShape>OpenHandCursor</cursorShape>
+                   <cursorShape>ArrowCursor</cursorShape>
                   </property>
                   <property name="text">
                    <string>Generate Tree</string>
                   </property>
                   <property name="checkable">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                   <property name="checked">
                    <bool>false</bool>
@@ -539,14 +542,14 @@
                    </font>
                   </property>
                   <property name="cursor">
-                   <cursorShape>OpenHandCursor</cursorShape>
+                   <cursorShape>ArrowCursor</cursorShape>
                   </property>
                   <property name="text">
                    <string>Breadth First
 Traversal</string>
                   </property>
                   <property name="checkable">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                   <property name="checked">
                    <bool>false</bool>
@@ -573,14 +576,14 @@ Traversal</string>
                    </font>
                   </property>
                   <property name="cursor">
-                   <cursorShape>OpenHandCursor</cursorShape>
+                   <cursorShape>ArrowCursor</cursorShape>
                   </property>
                   <property name="text">
                    <string>Pre Order 
 Traversal</string>
                   </property>
                   <property name="checkable">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>
@@ -598,14 +601,14 @@ Traversal</string>
                    </font>
                   </property>
                   <property name="cursor">
-                   <cursorShape>OpenHandCursor</cursorShape>
+                   <cursorShape>ArrowCursor</cursorShape>
                   </property>
                   <property name="text">
                    <string>In Order 
 Traversal</string>
                   </property>
                   <property name="checkable">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>
@@ -623,7 +626,7 @@ Traversal</string>
                    </font>
                   </property>
                   <property name="cursor">
-                   <cursorShape>OpenHandCursor</cursorShape>
+                   <cursorShape>ArrowCursor</cursorShape>
                   </property>
                   <property name="autoFillBackground">
                    <bool>false</bool>
@@ -633,7 +636,7 @@ Traversal</string>
 Traversal</string>
                   </property>
                   <property name="checkable">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>
@@ -651,6 +654,7 @@ Traversal</string>
     </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -676,7 +680,6 @@ Traversal</string>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew_Window">
    <property name="text">
     <string>New Window</string>
