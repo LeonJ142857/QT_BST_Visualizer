@@ -11,6 +11,7 @@
 struct Node{
     Node *p;
     int key;
+    int searched;
     Node *left;
     Node *right;
 };

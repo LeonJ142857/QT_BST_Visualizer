@@ -1,6 +1,7 @@
 #include "binarytreegraphic.h"
 #include <algorithm>
 #include <user.h>
+#include <mainwindow.h>
 
 using namespace std;
 
@@ -39,9 +40,11 @@ void BinaryTreeGraphic::insert(int a){
 
 void BinaryTreeGraphic::preorderWalk(Node* p) {
     if (p != NULL) {
-       cout << p->key << " ";
+       cout << p->key << "\n";
+       MainWindow::setItems(p->key);
        this->preorderWalk(p->left);
        this->preorderWalk(p->right);
+       return;
     }
 }
 
@@ -56,6 +59,7 @@ void BinaryTreeGraphic::postorderWalk(Node* p) {
            this->postorderWalk(p->left);
            this->postorderWalk(p->right);
            cout << p->key << " ";
+           MainWindow::setItems(p->key);
         }
 }
 
@@ -69,6 +73,7 @@ void BinaryTreeGraphic::inorderWalk(Node* p){
         if (p != NULL) {
            this->inorderWalk(p->left);
            cout << p->key << " ";
+           MainWindow::setItems(p->key);
            this->inorderWalk(p->right);
         }
 }
@@ -81,7 +86,10 @@ void BinaryTreeGraphic::inorderWalk(){
 
 Node* BinaryTreeGraphic::findElem(int val, Node* p){
     if(p != NULL){
-        if(val == p->key) return p;
+        if(val == p->key){
+            p->searched = 1;
+            return p;
+        }
 
         if(val < p->key){
             return findElem(val, p->left);
@@ -217,7 +225,10 @@ vector<int> BinaryTreeGraphic::generateTree(int nodes){
 
 void BinaryTreeGraphic::_graphWalk(Node* p, QTextStream *stream) {
     if (p != NULL){
-        *stream << "\t\t" << "n" << p->key << "[label=\"" << p->key << "\"];" << "\n";
+        if (p->searched == 1)
+            *stream << "\t\t" << "n" << p->key << "[color=\"green\",label=\"" << p->key << "\"];" << "\n";
+        else
+            *stream << "\t\t" << "n" << p->key << "[label=\"" << p->key << "\"];" << "\n";
 
         if(p->left != NULL){
             *stream << "\t\tn" << p->key << "--" << "n" << p->left->key << ";" << "\n";
@@ -228,7 +239,7 @@ void BinaryTreeGraphic::_graphWalk(Node* p, QTextStream *stream) {
         }
 
         if(p->right != NULL){
-            *stream << "\t\tn" << p->key << "--" << "n" << p->right->key << ";" << "\n";
+            *stream << "\t\tn" << p->key <<  "--" << "n" << p->right->key << ";" << "\n";
             this->_graphWalk(p->right, stream);
         }else{
             *stream << "\t\t" << "n" << p->key << "rightNull" << "[style=\"filled\",label=\".\"];" << "\n";

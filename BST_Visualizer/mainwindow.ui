@@ -98,7 +98,7 @@
           <item>
            <widget class="QPushButton" name="searchButton">
             <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
+             <cursorShape>ArrowCursor</cursorShape>
             </property>
             <property name="text">
              <string>Search</string>
