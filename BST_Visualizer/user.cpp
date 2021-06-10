@@ -94,8 +94,10 @@ QPixmap User::createTree(vector<int> arr, int signal, int opVal, int opVal2){ //
     }
     else if (signal == 5){ // search
         QString searchNodeStr = QString::number(opVal);
-        if (tree->findElem(opVal) == NULL)
+        if (tree->findElem(opVal) == NULL){
+            MainWindow::setSearchFound(false);
             QMessageBox::information(NULL, "Information", "Node \"" + searchNodeStr + "\" was not found.");
+        }
         if (opVal2 != -1)
             tree->findElem(opVal2);
     }
