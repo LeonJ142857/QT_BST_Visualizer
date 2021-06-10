@@ -21,7 +21,9 @@ void BinaryTreeGraphic::insert(int a){
     if(this->_root == NULL){
         tmp->p = NULL;
         this->_root = tmp;
+        MainWindow::setRootNode(true);
     }else{
+        MainWindow::setRootNode(false);
         Node* cElem = this->_root;
         Node* parent = NULL;
 
@@ -31,7 +33,6 @@ void BinaryTreeGraphic::insert(int a){
                 cElem = cElem->left;
             } else {
                 cElem = cElem->right;
-//            cElem = (a < cElem->key) ? cElem->left : cElem->right;
             }
         }
 
