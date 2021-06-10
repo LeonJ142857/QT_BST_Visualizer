@@ -25,6 +25,7 @@ class BinaryTreeGraphic
         void preorderWalk();
         void postorderWalk();
         void inorderWalk();
+        void breadthfirstWalk();
 
         int deleteNode(int val);
         int deleteNode(Node* p);
@@ -46,6 +47,7 @@ class BinaryTreeGraphic
         void preorderWalk(Node* p);
         void postorderWalk(Node* p);
         void inorderWalk(Node* p);
+        void breadthfirstWalk(Node* p);
 
         Node* findSuccessor(int val);
 
@@ -56,6 +58,8 @@ class BinaryTreeGraphic
         Node* _root;
         QGraphicsScene* _scene;
         QGraphicsView* _view;
+
+        int searchSig;
 };
 
 #endif // BINARYTREEGRAPHIC_H
