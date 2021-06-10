@@ -6,6 +6,7 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <mainwindow.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -44,7 +45,7 @@ void User::writeToFile(vector<int> arr){
     userData.close();
 }
 
-QPixmap User::createTree(vector<int> arr, int signal, int opVal){ // operationValue
+QPixmap User::createTree(vector<int> arr, int signal, int opVal, int opVal2){ // operationValue
     QGraphicsScene scene;
     QGraphicsView view(&scene);
 
@@ -68,22 +69,38 @@ QPixmap User::createTree(vector<int> arr, int signal, int opVal){ // operationVa
 //    tree->postorderWalk();
 
     if (signal == 3){ // delete
+        vector<int> originalVec = arr;
         QString delValStr = QString::number(opVal);
         int delNode = tree->deleteNode(opVal);
         if (delNode == -1)
             QMessageBox::information(NULL, "Information", "Node \"" + delValStr + "\" was not found. Delete operation has been aborted.");
         else {
             std::vector<int>::iterator position = std::find(arr.begin(), arr.end(), opVal);
-            if (position != arr.end()) // == myVector.end() means the element was not found
-                arr.erase(position);
+            if (position != arr.end()){ // == myVector.end() means the element was not found
+                if (!MainWindow::getDeleteHolder().empty()){
+                    std::vector<int>::iterator successorPos = std::find(arr.begin(), arr.end(), MainWindow::getDeleteHolder()[0]);
+                    if (successorPos != arr.end()){
+                        int delPos = distance(arr.begin(), position);
+//                        int succPos = distance(arr.begin(), successorPos);
+                        arr.erase(successorPos);
+                        arr[delPos] = MainWindow::getDeleteHolder()[0];
+//                        iter_swap(arr.begin() + delPos, arr.begin() + succPos);
+                    }
+                } else arr.erase(position);
+            }
             writeToFile(arr);
-            createTree(arr);
+//            createTree(arr);
         }
     }
     else if (signal == 5){ // search
         QString searchNodeStr = QString::number(opVal);
         if (tree->findElem(opVal) == NULL)
             QMessageBox::information(NULL, "Information", "Node \"" + searchNodeStr + "\" was not found.");
+        if (opVal2 != -1)
+            tree->findElem(opVal2);
+    }
+    else if (signal == 7){
+        tree->breadthfirstWalk();
     }
     else if (signal == 8){
         tree->preorderWalk();
@@ -121,7 +138,7 @@ QPixmap User::refreshTree(int val){
     vector<int> tree_nodes = readFile();
     QString valStr = QString::number(val);
     if (std::find(tree_nodes.begin(), tree_nodes.end(), val) != tree_nodes.end())
-        QMessageBox::information(NULL, "Information", "Element \"" + valStr + "\" is already present in the tree. BST does not allow duplicate elements");
+        QMessageBox::information(NULL, "Information", "Node \"" + valStr + "\" is already present in the tree. BST does not allow duplicate elements");
     else
         tree_nodes.push_back(val);
     return createTree(tree_nodes);
@@ -135,6 +152,12 @@ QPixmap User::resetTree(){
 QPixmap User::searchNode(int val){
     vector<int> search_node = readFile();
     return createTree(search_node, 5, val);
+}
+
+QPixmap User::searchNode(int val, int val2)
+{
+    vector<int> search_node = readFile();
+    return createTree(search_node, 5, val, val2);
 }
 
 QPixmap User::preOrder(){
