@@ -25,12 +25,14 @@ public:
     static void setSuccValue(int val);
     static void setSearchSig(int val);
     static void setRootNode(bool check);
+    static void setSearchFound(bool check);
     static std::vector<int> getInsertItems();
     static std::vector<int> getSearchItems();
     static std::vector<int> getDeleteHolder();
     static int getSuccValue();
     static int getSearchSig();
     static bool isRootNode();
+    static bool isSearchFound();
     std::vector<int> findSuccessor(int val);
 //    static Node* getItems(int val);
 //    static std::vector<Node*> getItems();
@@ -73,7 +75,7 @@ private:
     int count = 0;
     int count2 = 0;
     int doSignal, opValue, tempCount;
-    static bool rootNode;
+    static bool rootNode, searchFound;
     bool switched = false;
 };
 #endif // MAINWINDOW_H

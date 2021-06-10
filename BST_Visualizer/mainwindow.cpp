@@ -15,6 +15,7 @@ std::vector<int> MainWindow::items_search;
 std::vector<int> MainWindow::items_delete;
 std::vector<int> MainWindow::delete_holder;
 bool MainWindow::rootNode;
+bool MainWindow::searchFound;
 int MainWindow::succValue = -1;
 int MainWindow::searchSig = 0;
 
@@ -54,14 +55,15 @@ void MainWindow::updateTree(){
     vector<int> referenceVec;
     this->scene->clear();
 
+    // traversal
     if (this->doSignal == 1){
         if (count == 0) // fixing the issue with the +1 size below
             items_traversal.pop_back();
         this->scene->addPixmap(User::searchNode(items_traversal[count]));
         referenceVec = items_traversal;
     }
+    // insert
     else if (this->doSignal == 2){
-        // do something that is related to insert animation;
         if (count == 0)
             items_insert = items_search;
         if (isRootNode()){
@@ -76,6 +78,7 @@ void MainWindow::updateTree(){
             }
         }
     }
+    // delete
     else if (this->doSignal == 3){
         if (count == 0)
             items_delete = items_search;
@@ -121,6 +124,16 @@ void MainWindow::updateTree(){
                 this->scene->addPixmap(User::searchNode(items_search[count]));
             referenceVec = items_delete;
         }
+    }
+    // search
+    else if (doSignal == 4){
+        if (count == 0){
+            items_insert = items_search;
+        }
+        this->scene->addPixmap(User::searchNode(items_insert[count]));
+        referenceVec = items_insert;
+        if (items_insert[count] == opValue || !isSearchFound())
+            referenceVec.clear();
     }
 
     count++;
@@ -189,6 +202,11 @@ void MainWindow::setRootNode(bool check)
     rootNode = check;
 }
 
+void MainWindow::setSearchFound(bool check)
+{
+    searchFound = check;
+}
+
 vector<int> MainWindow::getInsertItems(){
     return items_insert;
 }
@@ -213,6 +231,11 @@ int MainWindow::getSearchSig()
 bool MainWindow::isRootNode()
 {
     return rootNode;
+}
+
+bool MainWindow::isSearchFound()
+{
+    return searchFound;
 }
 
 void MainWindow::on_BFTButton_2_clicked(){
@@ -250,7 +273,6 @@ void MainWindow::on_insertButton_clicked(){
     this->opValue = val;
 
     User::refreshTree(val);
-//    this->opPixmap = User::refreshTree(val);
     if (!all.empty()){
         User::searchNode(val);
         User::writeToFile(all);
@@ -258,15 +280,13 @@ void MainWindow::on_insertButton_clicked(){
     else
         User::deleteNode(val);
     startTimer();
-//    this->scene->clear();
-//    this->scene->addPixmap(User::refreshTree(val));
 }
 
 void MainWindow::on_deleteButton_clicked(){
     this->items_insert.clear();
     this->items_search.clear();
     this->delete_holder.clear();
-    vector<int> all/*, temp*/;
+    vector<int> all;
     this->count = 0;
     this->count2 = 0;
     this->switched = false;
@@ -288,12 +308,21 @@ void MainWindow::on_deleteButton_clicked(){
 }
 
 void MainWindow::on_searchButton_clicked(){
+    this->items_insert.clear();
+    this->items_search.clear();
+    this->count = 0;
+    this->doSignal = 4;
+
     QString input_search = ui->lineEdit_search->text();
     if(input_search.isEmpty())
         return;
     int inpSearch = input_search.toInt();
-    this->scene->clear();
-    this->scene->addPixmap(User::searchNode(inpSearch));
+
+    this->opValue = inpSearch;
+    setSearchFound(true);
+
+    User::searchNode(inpSearch);
+    startTimer();
 }
 
 void MainWindow::on_bt_refresh_clicked(){
