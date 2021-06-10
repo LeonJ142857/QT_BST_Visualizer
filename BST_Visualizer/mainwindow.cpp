@@ -14,6 +14,7 @@ std::vector<int> MainWindow::items_insert;
 std::vector<int> MainWindow::items_search;
 std::vector<int> MainWindow::items_delete;
 std::vector<int> MainWindow::delete_holder;
+bool MainWindow::rootNode;
 int MainWindow::succValue = -1;
 int MainWindow::searchSig = 0;
 
@@ -54,7 +55,7 @@ void MainWindow::updateTree(){
     this->scene->clear();
 
     if (this->doSignal == 1){
-        if (count == 0)
+        if (count == 0) // fixing the issue with the +1 size below
             items_traversal.pop_back();
         this->scene->addPixmap(User::searchNode(items_traversal[count]));
         referenceVec = items_traversal;
@@ -63,20 +64,29 @@ void MainWindow::updateTree(){
         // do something that is related to insert animation;
         if (count == 0)
             items_insert = items_search;
-        this->scene->addPixmap(User::searchNode(items_insert[count]));
-        referenceVec = items_insert;
+        if (isRootNode()){
+            this->scene->addPixmap(User::refreshTree(this->opValue));
+            referenceVec.clear();
+        } else {
+            if (items_insert[count] == opValue)
+                referenceVec.clear();
+            else {
+                this->scene->addPixmap(User::searchNode(items_insert[count]));
+                referenceVec = items_insert;
+            }
+        }
     }
     else if (this->doSignal == 3){
         if (count == 0)
             items_delete = items_search;
         if (getSuccValue() != -1){
             // do searchNode of successor value after iterator reached delVal.
-            // set refVec to the size of the successor search vector.
+            // set refVec to the size of items_delete.
+            // after it has reached the successor value search, terminate the program.
             if (items_search[count-1] == getSuccValue()){
                 this->scene->addPixmap(User::searchNode(items_search[count], delete_holder[0]));
-                cout << getSuccValue();
                 referenceVec = items_delete;
-                if (count2 == 1)
+                if (count2 == 1) // added a new var 'count2' to ease the termination process.
                     referenceVec.clear();
                 count2++;
             }
@@ -85,7 +95,14 @@ void MainWindow::updateTree(){
                 referenceVec = items_delete;
             }
         }
+        // this statement is checking if the current node being searched is the last element being searched.
+        // if the statement is not declared, the program will go indefinitely since items_search will
+        // continously be added with nodes. items_insert contains the successor value of current node (if any).
         else if (items_search[count] == items_search[items_search.size()-1] && !items_insert.empty()){
+
+            // check if the count is 0, because the program will show a bug, that is if the node to be deleted
+            // is the root node and it has only one child, it will show the child first then the current node.
+            // var bool 'switched' is declared to act as a checker whether the node to be deleted is the root node.
             if (count == 0){
                 this->scene->addPixmap(User::searchNode(items_search[count]));
                 this->switched = true;
@@ -94,6 +111,10 @@ void MainWindow::updateTree(){
             referenceVec = items_delete;
         }
         else {
+
+            // check if the previous count is 0. this is the continuation of the previous 'if' inside the 'else if' statement that contains the bug.
+            // when 'switched' is true, it means that the node being deleted is the root node that contains one child. Thus the program will go into
+            // the 'if' statement below.
             if (count-1 == 0 && this->switched)
                 this->scene->addPixmap(User::searchNode(items_search[items_search.size()-1], items_insert[count2]));
             else
@@ -103,7 +124,7 @@ void MainWindow::updateTree(){
     }
 
     count++;
-    if (count >= referenceVec.size()+1){ // count == referenceVec.size()
+    if (count >= referenceVec.size()+1){ // +1 to let the program go to the phase of showing the child node (for delete).
         timer->stop();
         ui->deleteButton->setDisabled(false);
         ui->insertButton->setDisabled(false);
@@ -118,6 +139,22 @@ void MainWindow::updateTree(){
         if (this->doSignal == 3){
             this->scene->clear();
             this->scene->addPixmap(User::deleteNode(this->opValue));
+        }
+        else if (this->doSignal == 2){
+            if (isRootNode()){
+                this->scene->clear();
+                this->scene->addPixmap(User::searchNode(this->opValue));
+            }
+            else {
+                vector<int> userData = User::readFile();
+
+                // the 'if' statement below is only used for the second element being inserted.
+                if (std::find(userData.begin(), userData.end(), this->opValue) == userData.end()){
+                    this->scene->addPixmap(User::refreshTree(this->opValue));
+                }
+                this->scene->clear();
+                this->scene->addPixmap(User::searchNode(this->opValue));
+            }
         }
     }
 }
@@ -147,6 +184,11 @@ void MainWindow::setSearchSig(int val)
     searchSig = val;
 }
 
+void MainWindow::setRootNode(bool check)
+{
+    rootNode = check;
+}
+
 vector<int> MainWindow::getInsertItems(){
     return items_insert;
 }
@@ -166,6 +208,11 @@ int MainWindow::getSuccValue(){
 int MainWindow::getSearchSig()
 {
     return searchSig;
+}
+
+bool MainWindow::isRootNode()
+{
+    return rootNode;
 }
 
 void MainWindow::on_BFTButton_2_clicked(){
@@ -188,14 +235,31 @@ void MainWindow::on_BFTButton_2_clicked(){
 void MainWindow::on_insertButton_clicked(){
     this->items_insert.clear();
     this->items_search.clear();
+    this->rootNode = false;
+    vector<int> all;
     this->count = 0;
     this->doSignal = 2;
+
+    all = User::readFile();
+
     QString input = ui->lineEdit_insert->text();
     if(input.isEmpty())
         return;
     int val = input.toInt();
-    this->scene->clear();
-    this->scene->addPixmap(User::refreshTree(val));
+
+    this->opValue = val;
+
+    User::refreshTree(val);
+//    this->opPixmap = User::refreshTree(val);
+    if (!all.empty()){
+        User::searchNode(val);
+        User::writeToFile(all);
+    }
+    else
+        User::deleteNode(val);
+    startTimer();
+//    this->scene->clear();
+//    this->scene->addPixmap(User::refreshTree(val));
 }
 
 void MainWindow::on_deleteButton_clicked(){
@@ -218,7 +282,7 @@ void MainWindow::on_deleteButton_clicked(){
     this->doSignal = 3;
     this->opValue = delVal;
 
-    this->delPixmap = User::deleteNode(delVal);
+    this->opPixmap = User::deleteNode(delVal);
     User::writeToFile(all);
     startTimer();
 }
