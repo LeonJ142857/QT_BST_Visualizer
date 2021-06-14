@@ -17,6 +17,7 @@ std::vector<int> MainWindow::delete_holder;
 bool MainWindow::rootNode;
 bool MainWindow::searchFound;
 int MainWindow::succValue = -1;
+int MainWindow::lastVal = -1;
 int MainWindow::searchSig = 0;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -129,11 +130,16 @@ void MainWindow::updateTree(){
     else if (doSignal == 4){
         if (count == 0){
             items_insert = items_search;
+            setLastVal(items_insert[items_insert.size()-2]);
         }
-        this->scene->addPixmap(User::searchNode(items_insert[count]));
+        this->scene->addPixmap(User::searchNode(items_search[count]));
         referenceVec = items_insert;
-        if (items_insert[count] == opValue || !isSearchFound())
-            referenceVec.clear();
+        if (items_insert[count] == opValue || items_insert[count-2] == getLastVal()/*|| items_search[count] == items_search[items_search.size()-2]*/){
+            /*if (count == 0 && !isSearchFound())
+                referenceVec = items_insert;
+            else*/ /*if (items_insert[count-1] == getLastVal() && !isSearchFound())*/
+                referenceVec.clear();
+        }
     }
 
     count++;
@@ -169,6 +175,10 @@ void MainWindow::updateTree(){
                 this->scene->addPixmap(User::searchNode(this->opValue));
             }
         }
+        else if (this->doSignal == 4){
+            this->scene->clear();
+            this->scene->addPixmap(User::searchNode(this->opValue));
+        }
     }
 }
 
@@ -195,6 +205,11 @@ void MainWindow::setSuccValue(int val){
 void MainWindow::setSearchSig(int val)
 {
     searchSig = val;
+}
+
+void MainWindow::setLastVal(int val)
+{
+    lastVal = val;
 }
 
 void MainWindow::setRootNode(bool check)
@@ -226,6 +241,11 @@ int MainWindow::getSuccValue(){
 int MainWindow::getSearchSig()
 {
     return searchSig;
+}
+
+int MainWindow::getLastVal()
+{
+    return lastVal;
 }
 
 bool MainWindow::isRootNode()
@@ -311,10 +331,11 @@ void MainWindow::on_searchButton_clicked(){
     this->items_insert.clear();
     this->items_search.clear();
     this->count = 0;
+    this->count2 = 0;
     this->doSignal = 4;
 
     QString input_search = ui->lineEdit_search->text();
-    if(input_search.isEmpty())
+    if(input_search.isEmpty() || User::readFile().empty())
         return;
     int inpSearch = input_search.toInt();
 

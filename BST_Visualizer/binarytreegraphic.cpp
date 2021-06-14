@@ -115,6 +115,9 @@ Node* BinaryTreeGraphic::findElem(int val, Node* p){
 
         MainWindow::setSearchItems(p->key);
 
+//        if (p->left == NULL || p->right == NULL)
+//            MainWindow::setLastVal(p->key);
+
         if(val == p->key){
 
             MainWindow::setSearchItems(val);

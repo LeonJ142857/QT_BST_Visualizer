@@ -24,6 +24,7 @@ public:
     static void setDeleteHolder(int val);
     static void setSuccValue(int val);
     static void setSearchSig(int val);
+    static void setLastVal(int val);
     static void setRootNode(bool check);
     static void setSearchFound(bool check);
     static std::vector<int> getInsertItems();
@@ -31,6 +32,7 @@ public:
     static std::vector<int> getDeleteHolder();
     static int getSuccValue();
     static int getSearchSig();
+    static int getLastVal();
     static bool isRootNode();
     static bool isSearchFound();
     std::vector<int> findSuccessor(int val);
@@ -71,7 +73,7 @@ private:
     static std::vector<int> items_search;
     static std::vector<int> items_delete;
     static std::vector<int> delete_holder;
-    static int succValue, searchSig;
+    static int succValue, searchSig, lastVal;
     int count = 0;
     int count2 = 0;
     int doSignal, opValue, tempCount;
