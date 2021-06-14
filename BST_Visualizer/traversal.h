@@ -4,22 +4,22 @@
 #include <QDialog>
 
 namespace Ui {
-class traversal;
+class Traversal;
 }
 
-class traversal : public QDialog
+class Traversal : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit traversal(QWidget *parent = nullptr);
-    ~traversal();
+    explicit Traversal(QWidget *parent = nullptr);
+    ~Traversal();
     void traversalSeq(QString travSequence);
     void traversalName(QString travName);
     void traversalInfo(QString travInfo);
 
 private:
-    Ui::traversal *ui;
+    Ui::Traversal *ui;
 };
 
 #endif // TRAVERSAL_H

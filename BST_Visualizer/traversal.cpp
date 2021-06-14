@@ -1,26 +1,26 @@
 #include "traversal.h"
 #include "ui_traversal.h"
 
-traversal::traversal(QWidget *parent) :
+Traversal::Traversal(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::traversal)
+    ui(new Ui::Traversal)
 {
     ui->setupUi(this);
 }
 
-traversal::~traversal()
+Traversal::~Traversal()
 {
     delete ui;
 }
 
-void traversal::traversalSeq(QString travSequence){
+void Traversal::traversalSeq(QString travSequence){
     ui->label_graphtraversal->setText(travSequence);
 }
 
-void traversal::traversalName(QString travName){
+void Traversal::traversalName(QString travName){
     ui->label_traversalname->setText(travName);
 }
 
-void traversal::traversalInfo(QString travInfo){
+void Traversal::traversalInfo(QString travInfo){
     ui->label_traversalquickinfo->setText(travInfo);
 }
