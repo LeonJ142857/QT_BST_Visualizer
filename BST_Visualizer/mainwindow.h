@@ -22,25 +22,17 @@ public:
     static void setInsertItems(int val);
     static void setSearchItems(int val);
     static void setDeleteHolder(int val);
-    static void setSuccValue(int val);
-    static void setSearchSig(int val);
-    static void setLastVal(int val);
-    static void setRootNode(bool check);
-    static void setSearchFound(bool check);
     static std::vector<int> getInsertItems();
     static std::vector<int> getSearchItems();
     static std::vector<int> getDeleteHolder();
+
+    static void setSuccValue(int val);
+    static void setSearchSig(int val);
     static int getSuccValue();
     static int getSearchSig();
-    static int getLastVal();
-    static bool isRootNode();
-    static bool isSearchFound();
-    std::vector<int> findSuccessor(int val);
-//    static Node* getItems(int val);
-//    static std::vector<Node*> getItems();
-//    void updateTree();
-//    void startTimer();
 
+    static void setRootNode(bool check);
+    static bool isRootNode();
 
 private slots:
     void on_BFTButton_2_clicked();
@@ -49,13 +41,9 @@ private slots:
     void on_searchButton_clicked();
     void on_bt_refresh_clicked();
     void on_bt_reset_clicked();
-
     void on_BFTButton_clicked();
-
     void on_PreOrderButton_clicked();
-
     void on_InOrderButton_clicked();
-
     void on_PostOrderButton_clicked();
     void updateTree();
     void startTimer();
@@ -67,17 +55,13 @@ private:
     BinaryTreeGraphic *root2;
     QTimer *timer;
     QPixmap opPixmap;
-    traversal *travers;
-    static std::vector<int> items_traversal;
-    static std::vector<int> items_insert;
-    static std::vector<int> items_search;
-    static std::vector<int> items_delete;
-    static std::vector<int> delete_holder;
+    Traversal *travers;
+
+    static std::vector<int> items_traversal, items_insert, items_search, items_delete, delete_holder;
+
     static int succValue, searchSig, lastVal;
-    int count = 0;
-    int count2 = 0;
-    int doSignal, opValue, tempCount;
-    static bool rootNode, searchFound;
+    int count = 0, count2 = 0, doSignal, opValue, tempCount;
+    static bool rootNode;
     bool switched = false;
 };
 #endif // MAINWINDOW_H

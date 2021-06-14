@@ -23,8 +23,6 @@ class User{
         QPixmap static refreshTree(int val);
         QPixmap static refreshTree();
         QPixmap static resetTree();
-        QPixmap static preOrder();
-        vector<int> static findSuccessor(int val);
     protected:
     private:
 };

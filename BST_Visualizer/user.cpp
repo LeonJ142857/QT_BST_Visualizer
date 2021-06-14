@@ -59,15 +59,6 @@ QPixmap User::createTree(vector<int> arr, int signal, int opVal, int opVal2){ //
             tree->insert(i);
     }
 
-//    cout << "Number of nodes which have only left child: " << tree->countLeftNodes() << endl;
-//    cout << "Tree height: " << tree->countLevels() << endl;
-//    cout << "Number of nodes: " << tree->countNodes() << endl;
-//    cout << "Find element: " << tree->findElem(19) << endl;
-
-//    tree->preorderWalk();
-//    tree->inorderWalk();
-//    tree->postorderWalk();
-
     if (signal == 3){ // delete
         vector<int> originalVec = arr;
         QString delValStr = QString::number(opVal);
@@ -76,41 +67,36 @@ QPixmap User::createTree(vector<int> arr, int signal, int opVal, int opVal2){ //
             QMessageBox::information(NULL, "Information", "Node \"" + delValStr + "\" was not found. Delete operation has been aborted.");
         else {
             std::vector<int>::iterator position = std::find(arr.begin(), arr.end(), opVal);
-            if (position != arr.end()){ // == myVector.end() means the element was not found
+            if (position != arr.end()){ // == arr.end() means the element was not found
                 if (!MainWindow::getDeleteHolder().empty()){
                     std::vector<int>::iterator successorPos = std::find(arr.begin(), arr.end(), MainWindow::getDeleteHolder()[0]);
                     if (successorPos != arr.end()){
                         int delPos = distance(arr.begin(), position);
-//                        int succPos = distance(arr.begin(), successorPos);
                         arr.erase(successorPos);
                         arr[delPos] = MainWindow::getDeleteHolder()[0];
-//                        iter_swap(arr.begin() + delPos, arr.begin() + succPos);
                     }
                 } else arr.erase(position);
             }
             writeToFile(arr);
-//            createTree(arr);
         }
     }
     else if (signal == 5){ // search
         QString searchNodeStr = QString::number(opVal);
-        if (tree->findElem(opVal) == NULL){
-            MainWindow::setSearchFound(false);
+        if (tree->findElem(opVal) == NULL)
             QMessageBox::information(NULL, "Information", "Node \"" + searchNodeStr + "\" was not found.");
-        }
         if (opVal2 != -1)
             tree->findElem(opVal2);
     }
-    else if (signal == 7){
+    else if (signal == 7){ // bft
         tree->breadthfirstWalk();
     }
-    else if (signal == 8){
+    else if (signal == 8){ // pre-ot
         tree->preorderWalk();
     }
-    else if (signal == 9){
+    else if (signal == 9){ // iot
         tree->inorderWalk();
     }
-    else if (signal == 10){
+    else if (signal == 10){ // post-ot
         tree->postorderWalk();
     }
 
@@ -160,9 +146,4 @@ QPixmap User::searchNode(int val, int val2)
 {
     vector<int> search_node = readFile();
     return createTree(search_node, 5, val, val2);
-}
-
-QPixmap User::preOrder(){
-    vector<int> userTree = readFile();
-    return createTree(userTree, 8);
 }

@@ -1,5 +1,4 @@
 #include "binarytreegraphic.h"
-#include <algorithm>
 #include <user.h>
 #include <mainwindow.h>
 #include <queue>
@@ -115,9 +114,6 @@ Node* BinaryTreeGraphic::findElem(int val, Node* p){
 
         MainWindow::setSearchItems(p->key);
 
-//        if (p->left == NULL || p->right == NULL)
-//            MainWindow::setLastVal(p->key);
-
         if(val == p->key){
 
             MainWindow::setSearchItems(val);
@@ -148,11 +144,9 @@ Node* BinaryTreeGraphic::findElem(int val){
 
 Node* BinaryTreeGraphic::findSuccessor(int val){
     Node* startNode = this->findElem(val);
-    Node* parent = startNode;
 
     startNode = startNode->right;
     while(startNode != NULL && startNode->left != NULL){
-        parent = startNode;
         startNode = startNode->left;
     }
 
@@ -204,50 +198,6 @@ int BinaryTreeGraphic::deleteNode(int val){
         return -1;
     else
         return 0;
-}
-
-int BinaryTreeGraphic::countLevels(Node* p){
-        int h1 = 0, h2 = 0;
-
-        if(p == NULL) return 0;
-
-        if(p->left){
-            h1 = countLevels(p->left);
-        }
-
-        if(p->right){
-            h2 = countLevels(p->right);
-        }
-
-        return(max(h1,h2)+1);
-}
-
-int BinaryTreeGraphic::countLevels(){
-    return this->countLevels(this->_root);
-}
-
-int BinaryTreeGraphic::countNodes(Node* p){
-      if(p == NULL){
-            return 0;
-      }else{
-            return (countNodes(p->left) + countNodes(p->right)+1);
-      }
-}
-
-int BinaryTreeGraphic::countNodes(){
-    return this->countNodes(this->_root);
-}
-
-int BinaryTreeGraphic::countLeftNodes(Node* p) {
-    if(p == NULL){
-          return 0;
-    }else{
-        return (countLeftNodes(p->left) + countLeftNodes(p->right)) + (p->left != NULL && p->right == NULL) ? 1 : 0;
-    }
-}
-
-int BinaryTreeGraphic::countLeftNodes(){
-    return this->countLeftNodes(this->_root);
 }
 
 vector<int> BinaryTreeGraphic::generateTree(int nodes){
@@ -324,13 +274,6 @@ QPixmap BinaryTreeGraphic::show(){
 
     pixmap.loadFromData(data);
 
-//    this->_scene->addPixmap(pixmap);
-//    this->_view->show();
     p->kill();
     return pixmap;
 }
-
-void BinaryTreeGraphic::close(){
-    this->_view->close();
-}
-

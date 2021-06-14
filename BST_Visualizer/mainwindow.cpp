@@ -14,11 +14,10 @@ std::vector<int> MainWindow::items_insert;
 std::vector<int> MainWindow::items_search;
 std::vector<int> MainWindow::items_delete;
 std::vector<int> MainWindow::delete_holder;
-bool MainWindow::rootNode;
-bool MainWindow::searchFound;
 int MainWindow::succValue = -1;
 int MainWindow::lastVal = -1;
 int MainWindow::searchSig = 0;
+bool MainWindow::rootNode;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -30,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     scene->addPixmap(User::resetTree());
     this->timer = new QTimer(this);
+    this->setWindowTitle("Binary Search Tree Visualizer");
     connect(timer, SIGNAL(timeout()), this, SLOT(updateTree()));
 }
 
@@ -49,7 +49,7 @@ void MainWindow::startTimer(){
     ui->PreOrderButton->setDisabled(true);
     ui->InOrderButton->setDisabled(true);
     ui->PostOrderButton->setDisabled(true);
-    timer->start(1000);
+    timer->start(1000); // determines how fast the animation goes. milliseconds.
 }
 
 void MainWindow::updateTree(){
@@ -86,7 +86,7 @@ void MainWindow::updateTree(){
         if (getSuccValue() != -1){
             // do searchNode of successor value after iterator reached delVal.
             // set refVec to the size of items_delete.
-            // after it has reached the successor value search, terminate the program.
+            // after it has reached the successor value search, terminate the function.
             if (items_search[count-1] == getSuccValue()){
                 this->scene->addPixmap(User::searchNode(items_search[count], delete_holder[0]));
                 referenceVec = items_delete;
@@ -101,7 +101,7 @@ void MainWindow::updateTree(){
         }
         // this statement is checking if the current node being searched is the last element being searched.
         // if the statement is not declared, the program will go indefinitely since items_search will
-        // continously be added with nodes. items_insert contains the successor value of current node (if any).
+        // continuously be added with nodes. items_insert contains the successor value of current node (if any).
         else if (items_search[count] == items_search[items_search.size()-1] && !items_insert.empty()){
 
             // check if the count is 0, because the program will show a bug, that is if the node to be deleted
@@ -130,20 +130,30 @@ void MainWindow::updateTree(){
     else if (doSignal == 4){
         if (count == 0){
             items_insert = items_search;
-            setLastVal(items_insert[items_insert.size()-2]);
+            this->lastVal = items_insert[items_insert.size()-2];
         }
+
         this->scene->addPixmap(User::searchNode(items_search[count]));
         referenceVec = items_insert;
-        if (items_insert[count] == opValue || items_insert[count-2] == getLastVal()/*|| items_search[count] == items_search[items_search.size()-2]*/){
-            /*if (count == 0 && !isSearchFound())
-                referenceVec = items_insert;
-            else*/ /*if (items_insert[count-1] == getLastVal() && !isSearchFound())*/
-                referenceVec.clear();
-        }
+
+        // 'count - 2' means it checks 2 values before the current one in the items_insert vector which value
+        // has been assigned to this->lastVal in above's 'if' statement. I made a new lastVal variable to ease the
+        // comparison, which is used in below's 'if' statement. Without comparing it, the program will be bugged.
+        // I don't know why it sometimes has way more values in the items_search vector than it is supposed to.
+        // Hence the 'if (count >= referenceVec.size()+1){}' below will fail when that occurs. Other than that,
+        // sometimes the comparison fails because the items_search vector includes the proper search values. If
+        // this situation occurs, then the 'if' block below will fix that, since the 'count' value will always be
+        // higher than the vector size when it contains proper search values.
+        if (items_insert[count] == opValue || items_insert[count-2] == this->lastVal)
+            referenceVec.clear();
     }
 
     count++;
-    if (count >= referenceVec.size()+1){ // +1 to let the program go to the phase of showing the child node (for delete).
+
+    // +1 to let the program go to the phase of showing the child node (for delete).
+    // to let the program search for the final node before failing or reaching the desired node (search).
+    // to let the program go to the last node before inserting new node (insert).
+    if (count >= referenceVec.size()+1){
         timer->stop();
         ui->deleteButton->setDisabled(false);
         ui->insertButton->setDisabled(false);
@@ -207,19 +217,9 @@ void MainWindow::setSearchSig(int val)
     searchSig = val;
 }
 
-void MainWindow::setLastVal(int val)
-{
-    lastVal = val;
-}
-
 void MainWindow::setRootNode(bool check)
 {
     rootNode = check;
-}
-
-void MainWindow::setSearchFound(bool check)
-{
-    searchFound = check;
 }
 
 vector<int> MainWindow::getInsertItems(){
@@ -243,19 +243,9 @@ int MainWindow::getSearchSig()
     return searchSig;
 }
 
-int MainWindow::getLastVal()
-{
-    return lastVal;
-}
-
 bool MainWindow::isRootNode()
 {
     return rootNode;
-}
-
-bool MainWindow::isSearchFound()
-{
-    return searchFound;
 }
 
 void MainWindow::on_BFTButton_2_clicked(){
@@ -340,7 +330,6 @@ void MainWindow::on_searchButton_clicked(){
     int inpSearch = input_search.toInt();
 
     this->opValue = inpSearch;
-    setSearchFound(true);
 
     User::searchNode(inpSearch);
     startTimer();
@@ -357,10 +346,14 @@ void MainWindow::on_bt_reset_clicked(){
 }
 
 void MainWindow::on_BFTButton_clicked(){
+    if(User::readFile().empty())
+        return;
+
     items_traversal.clear();
     count = 0;
     doSignal = 1;
     vector<int> userTree = User::readFile();
+
     User::createTree(userTree, 7);
     QString stringstring;
     for (int i : items_traversal){
@@ -369,7 +362,8 @@ void MainWindow::on_BFTButton_clicked(){
         else
             stringstring = stringstring + " > " + QString::number(i);
     }
-    travers = new traversal(this);
+
+    travers = new Traversal(this);
     travers->traversalName("Breadth-First Traversal");
     travers->traversalInfo("How breadth-first traversal works: \n"
                            "It first enqueues the root of the tree. While "
@@ -379,18 +373,24 @@ void MainWindow::on_BFTButton_clicked(){
                            "finally enqueues the left child and the right child (if any).");
     travers->traversalSeq(stringstring);
     travers->setAttribute(Qt::WA_DeleteOnClose);
+    travers->setWindowTitle("Breadth-First Traversal");
     int x = QApplication::activeWindow()->width() - ui->graphicsView->width() / 2;
     int y = QApplication::activeWindow()->height() - ui->graphicsView->height() / 2;
     travers->move(x, y);
     travers->show();
+
     startTimer();
 }
 
 void MainWindow::on_PreOrderButton_clicked(){
+    if(User::readFile().empty())
+        return;
+
     items_traversal.clear();
     count = 0;
     doSignal = 1;
     vector<int> userTree = User::readFile();
+
     User::createTree(userTree, 8);
     QString stringstring;
     for (int i : items_traversal){
@@ -399,7 +399,8 @@ void MainWindow::on_PreOrderButton_clicked(){
         else
             stringstring = stringstring + " > " + QString::number(i);
     }
-    travers = new traversal(this);
+
+    travers = new Traversal(this);
     travers->traversalName("Pre-Order Traversal");
     travers->traversalInfo("How pre-order traversal works: \n"
                            "It first recursively visits the left subtree by calling the pre-order function "
@@ -408,6 +409,7 @@ void MainWindow::on_PreOrderButton_clicked(){
                            "Lastly, it visits the current node.");
     travers->traversalSeq(stringstring);
     travers->setAttribute(Qt::WA_DeleteOnClose);
+    travers->setWindowTitle("Pre-Order Traversal");
     int x = QApplication::activeWindow()->width() - ui->graphicsView->width() / 2;
     int y = QApplication::activeWindow()->height() - ui->graphicsView->height() / 2;
     travers->move(x, y);
@@ -417,10 +419,14 @@ void MainWindow::on_PreOrderButton_clicked(){
 }
 
 void MainWindow::on_InOrderButton_clicked(){
+    if(User::readFile().empty())
+        return;
+
     items_traversal.clear();
     count = 0;
     doSignal = 1;
     vector<int> userTree = User::readFile();
+
     User::createTree(userTree, 9);
     QString stringstring;
     for (int i : items_traversal){
@@ -429,7 +435,8 @@ void MainWindow::on_InOrderButton_clicked(){
         else
             stringstring = stringstring + " > " + QString::number(i);
     }
-    travers = new traversal(this);
+
+    travers = new Traversal(this);
     travers->traversalName("In-Order Traversal");
     travers->traversalInfo("How in-order traversal works: \n"
                            "It first recursively visits the left subtree by calling the in-order function "
@@ -438,18 +445,24 @@ void MainWindow::on_InOrderButton_clicked(){
                            "subtree by calling the function and passing the right subtree as the parameter.");
     travers->traversalSeq(stringstring);
     travers->setAttribute(Qt::WA_DeleteOnClose);
+    travers->setWindowTitle("In-Order Traversal");
     int x = QApplication::activeWindow()->width() - ui->graphicsView->width() / 2;
     int y = QApplication::activeWindow()->height() - ui->graphicsView->height() / 2;
     travers->move(x, y);
     travers->show();
+
     startTimer();
 }
 
 void MainWindow::on_PostOrderButton_clicked(){
+    if(User::readFile().empty())
+        return;
+
     items_traversal.clear();
     count = 0;
     doSignal = 1;
     vector<int> userTree = User::readFile();
+
     User::createTree(userTree, 10);
     QString stringstring;
     for (int i : items_traversal){
@@ -458,7 +471,8 @@ void MainWindow::on_PostOrderButton_clicked(){
         else
             stringstring = stringstring + " > " + QString::number(i);
     }
-    travers = new traversal(this);
+
+    travers = new Traversal(this);
     travers->traversalName("Post-Order Traversal");
     travers->traversalInfo("How post-order traversal works: \nIt first visits the current node, then "
                            "recursively visits the left subtree by calling the pre-order function "
@@ -466,9 +480,11 @@ void MainWindow::on_PostOrderButton_clicked(){
                            "subtree by calling the function and passing the right subtree as the parameter.");
     travers->traversalSeq(stringstring);
     travers->setAttribute(Qt::WA_DeleteOnClose);
+    travers->setWindowTitle("Post-Order Traversal");
     int x = QApplication::activeWindow()->width() - ui->graphicsView->width() / 2;
     int y = QApplication::activeWindow()->height() - ui->graphicsView->height() / 2;
     travers->move(x, y);
     travers->show();
+
     startTimer();
 }

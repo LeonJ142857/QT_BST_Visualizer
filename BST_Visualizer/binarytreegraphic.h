@@ -30,20 +30,12 @@ class BinaryTreeGraphic
         int deleteNode(int val);
         int deleteNode(Node* p);
         QPixmap show();
-        void close();
 
-        int countNodes();
-        int countLevels();
-        int countLeftNodes();
         Node* findElem(int val);
-
         std::vector<int> static generateTree(int nodes);
+
     protected:
     private:
-        int countNodes(Node* p);
-        int countLevels(Node* p);
-        int countLeftNodes(Node *p);
-
         void preorderWalk(Node* p);
         void postorderWalk(Node* p);
         void inorderWalk(Node* p);
