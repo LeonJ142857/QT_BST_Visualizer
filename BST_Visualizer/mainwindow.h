@@ -48,6 +48,8 @@ private slots:
     void updateTree();
     void startTimer();
 
+    void on_bt_save_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
