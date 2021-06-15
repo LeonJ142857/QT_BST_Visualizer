@@ -6,6 +6,7 @@
 #include <user.h>
 #include <vector>
 #include <QTimer>
+#include <QFileDialog>
 
 using namespace std;
 
@@ -29,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     scene->addPixmap(User::resetTree());
     this->timer = new QTimer(this);
-    this->setWindowTitle("Binary Search Tree Visualizer");
+    this->setWindowTitle("BST Visualizer");
     connect(timer, SIGNAL(timeout()), this, SLOT(updateTree()));
 }
 
@@ -43,6 +44,7 @@ void MainWindow::startTimer(){
     ui->insertButton->setDisabled(true);
     ui->searchButton->setDisabled(true);
     ui->bt_refresh->setDisabled(true);
+     ui->bt_save->setDisabled(true);
     ui->bt_reset->setDisabled(true);
     ui->BFTButton_2->setDisabled(true);
     ui->BFTButton->setDisabled(true);
@@ -159,6 +161,7 @@ void MainWindow::updateTree(){
         ui->insertButton->setDisabled(false);
         ui->searchButton->setDisabled(false);
         ui->bt_refresh->setDisabled(false);
+        ui->bt_save->setDisabled(false);
         ui->bt_reset->setDisabled(false);
         ui->BFTButton_2->setDisabled(false);
         ui->BFTButton->setDisabled(false);
@@ -256,13 +259,14 @@ void MainWindow::on_BFTButton_2_clicked(){
 
     int nodes = input.toInt();
     if(nodes > 32){
-        QMessageBox::information(NULL, "Information", "Graphviz cannot handle more than 32 nodes. Please decrease the amount.");
+        QMessageBox::information(this, "Information", "Graphviz cannot handle more than 32 nodes. Please decrease the amount.");
         return;
     }
 
     vector<int> tree = BinaryTreeGraphic::generateTree(nodes);
+    this->opPixmap = User::createTree(tree);
     this->scene->clear();
-    this->scene->addPixmap(User::createTree(tree));
+    this->scene->addPixmap(this->opPixmap);
 }
 
 void MainWindow::on_insertButton_clicked(){
@@ -282,7 +286,7 @@ void MainWindow::on_insertButton_clicked(){
 
     this->opValue = val;
 
-    User::refreshTree(val);
+    this->opPixmap = User::refreshTree(val);
     if (!all.empty()){
         User::searchNode(val);
         User::writeToFile(all);
@@ -336,8 +340,22 @@ void MainWindow::on_searchButton_clicked(){
 }
 
 void MainWindow::on_bt_refresh_clicked(){
+    this->opPixmap = User::refreshTree();
     this->scene->clear();
-    this->scene->addPixmap(User::refreshTree());
+    this->scene->addPixmap(this->opPixmap);
+}
+
+void MainWindow::on_bt_save_clicked(){
+    if(User::readFile().empty())
+        return;
+
+    QString path = QFileDialog::getSaveFileName(this, tr("Save Tree"), QDir::homePath(), "Image File (*.png)");
+    if (!path.isEmpty()){
+        if (this->opPixmap.save(path))
+            QMessageBox::information(this, "Save Tree", "Saved tree successfully on " + path + ".");
+        else
+            QMessageBox::information(this, "Save Tree", "Failed to save tree. Please refresh the tree and try saving again.");
+    }
 }
 
 void MainWindow::on_bt_reset_clicked(){

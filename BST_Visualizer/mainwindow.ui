@@ -147,7 +147,27 @@
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>68</width>
+              <width>21</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="bt_save">
+            <property name="text">
+             <string>Save</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>19</width>
               <height>20</height>
              </size>
             </property>
@@ -167,7 +187,7 @@
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>198</width>
+              <width>188</width>
               <height>20</height>
              </size>
             </property>
@@ -262,7 +282,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>0</width>
+                    <width>100</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -293,7 +313,7 @@
                    <enum>QFrame::WinPanel</enum>
                   </property>
                   <property name="text">
-                   <string>Random Generate</string>
+                   <string>Generate</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -365,7 +385,7 @@
                    </size>
                   </property>
                   <property name="placeholderText">
-                   <string>Tree size (how many nodes)</string>
+                   <string>Nodes count</string>
                   </property>
                  </widget>
                 </item>
