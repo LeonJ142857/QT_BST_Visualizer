@@ -50,8 +50,6 @@ class BinaryTreeGraphic
         Node* _root;
         QGraphicsScene* _scene;
         QGraphicsView* _view;
-
-        int searchSig;
 };
 
 #endif // BINARYTREEGRAPHIC_H

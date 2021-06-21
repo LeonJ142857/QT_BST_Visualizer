@@ -268,12 +268,13 @@ QPixmap BinaryTreeGraphic::show(){
     QByteArray data;
     QPixmap pixmap = QPixmap();
 
-    while(p->waitForReadyRead(100)){
+    while(p->waitForReadyRead(300)){
         data.append(p->readAll());
     }
 
     pixmap.loadFromData(data);
 
-    p->kill();
+    p->close();
+    delete(p);
     return pixmap;
 }
