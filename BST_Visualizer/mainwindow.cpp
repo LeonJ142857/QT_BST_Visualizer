@@ -180,9 +180,8 @@ void MainWindow::updateTree(){
             else {
                 vector<int> userData = User::readFile();
 
-                // the 'if' statement below is only used for the second element being inserted.
                 if (std::find(userData.begin(), userData.end(), this->opValue) == userData.end()){
-                    this->scene->addPixmap(User::refreshTree(this->opValue));
+                    User::refreshTree(this->opValue);
                 }
                 this->scene->clear();
                 this->scene->addPixmap(User::searchNode(this->opValue));
@@ -258,8 +257,9 @@ void MainWindow::on_BFTButton_2_clicked(){
         return;
 
     int nodes = input.toInt();
-    if(nodes > 32){
-        QMessageBox::information(this, "Information", "Graphviz cannot handle more than 32 nodes. Please decrease the amount.");
+    if(nodes > 50){
+        QMessageBox::information(this, "Information", "The maximum number of nodes in auto-generated tree is 50. "
+                                 "You can manually add more nodes if you want after a tree has been generated.");
         return;
     }
 
@@ -270,7 +270,7 @@ void MainWindow::on_BFTButton_2_clicked(){
 }
 
 void MainWindow::on_insertButton_clicked(){
-    this->items_insert.clear();
+//    this->items_insert.clear();
     this->items_search.clear();
     this->rootNode = false;
     vector<int> all;

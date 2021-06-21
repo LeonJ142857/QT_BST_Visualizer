@@ -104,7 +104,11 @@ QPixmap User::createTree(vector<int> arr, int signal, int opVal, int opVal2){ //
         writeToFile(arr);
     else
         remove("userData.txt");
-    return tree->show();
+
+    QPixmap a = tree->show();
+    delete(tree);
+
+    return a;
 }
 
 QPixmap User::createTree(){
