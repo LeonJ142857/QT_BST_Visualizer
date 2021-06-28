@@ -3,6 +3,8 @@ Binary Search Tree Visualizer is a desktop app made with Qt to visualize binary 
 application uses Graphviz as its graph processing engine. Therefore, please install Graphviz before you launch this application on your PC. Other thing to note is that you need
 a C++ compiler installed on your system. 
 
+> Please read the program manual inside the project report file to have a clear understanding on how to install the required libraries and corrently launch the application. 
+
 # Links
 
 ### Qt Community Download 
@@ -30,5 +32,3 @@ https://youtu.be/T4GmJMN8gjQ
 ### Other Links
 
 If the project report and project presentation somehow breaks in this repository, here is the backup link to access them: https://drive.google.com/drive/folders/1cq_gdVdhI3FJlS6St-VnKhp5eyrd8-cQ?usp=sharing
-
-Please read the program manual inside the project report file to have a clear understanding on how to install the required libraries and corrently launch the application. 
