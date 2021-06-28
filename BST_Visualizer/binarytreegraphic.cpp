@@ -262,6 +262,11 @@ QPixmap BinaryTreeGraphic::show(){
     QByteArray a = this->_prepareGraph();
 
     p->setProcessChannelMode(QProcess::MergedChannels);
+
+    // please change the directory path of where you installed graphviz.
+    // look for an executable called dot.exe, copy the path and paste it to this
+    // line below.
+
     p->start("C:/Program Files/Graphviz/bin/dot.exe", QStringList() << "-Tpng");
     p->write(a);
 

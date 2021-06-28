@@ -44,7 +44,7 @@ void MainWindow::startTimer(){
     ui->insertButton->setDisabled(true);
     ui->searchButton->setDisabled(true);
     ui->bt_refresh->setDisabled(true);
-     ui->bt_save->setDisabled(true);
+    ui->bt_save->setDisabled(true);
     ui->bt_reset->setDisabled(true);
     ui->BFTButton_2->setDisabled(true);
     ui->BFTButton->setDisabled(true);
@@ -270,7 +270,7 @@ void MainWindow::on_BFTButton_2_clicked(){
 }
 
 void MainWindow::on_insertButton_clicked(){
-//    this->items_insert.clear();
+    this->items_insert.clear();
     this->items_search.clear();
     this->rootNode = false;
     vector<int> all;
