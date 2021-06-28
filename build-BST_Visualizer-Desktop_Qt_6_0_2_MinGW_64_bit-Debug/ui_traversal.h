@@ -45,15 +45,15 @@ public:
     QVBoxLayout *verticalLayout_4;
     QLabel *label_traversalquickinfo;
 
-    void setupUi(QDialog *traversal)
+    void setupUi(QDialog *Traversal)
     {
-        if (traversal->objectName().isEmpty())
-            traversal->setObjectName(QString::fromUtf8("traversal"));
-        traversal->resize(459, 321);
-        traversal->setMinimumSize(QSize(0, 321));
-        verticalLayout_5 = new QVBoxLayout(traversal);
+        if (Traversal->objectName().isEmpty())
+            Traversal->setObjectName(QString::fromUtf8("Traversal"));
+        Traversal->resize(459, 321);
+        Traversal->setMinimumSize(QSize(0, 321));
+        verticalLayout_5 = new QVBoxLayout(Traversal);
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
-        frame = new QFrame(traversal);
+        frame = new QFrame(Traversal);
         frame->setObjectName(QString::fromUtf8("frame"));
         frame->setFrameShape(QFrame::StyledPanel);
         frame->setFrameShadow(QFrame::Raised);
@@ -173,23 +173,23 @@ public:
         verticalLayout_5->addWidget(frame);
 
 
-        retranslateUi(traversal);
+        retranslateUi(Traversal);
 
-        QMetaObject::connectSlotsByName(traversal);
+        QMetaObject::connectSlotsByName(Traversal);
     } // setupUi
 
-    void retranslateUi(QDialog *traversal)
+    void retranslateUi(QDialog *Traversal)
     {
-        traversal->setWindowTitle(QCoreApplication::translate("traversal", "Dialog", nullptr));
-        label_traversalname->setText(QCoreApplication::translate("traversal", "Placeholder Traversal", nullptr));
-        label_2->setText(QCoreApplication::translate("traversal", "Sequence", nullptr));
-        label_graphtraversal->setText(QCoreApplication::translate("traversal", "4 > 5 > 2 > 3 > 22 > 23 > 54 > 53 > 2 > 323 > 2322 > 2", nullptr));
-        label_traversalquickinfo->setText(QCoreApplication::translate("traversal", "Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. It starts at the tree root (or some arbitrary node of a graph, sometimes referred to as a 'search key'), and explores all of the neighbor nodes at the present depth prior to moving on to the nodes at the next depth level.", nullptr));
+        Traversal->setWindowTitle(QCoreApplication::translate("Traversal", "Dialog", nullptr));
+        label_traversalname->setText(QCoreApplication::translate("Traversal", "Placeholder Traversal", nullptr));
+        label_2->setText(QCoreApplication::translate("Traversal", "Sequence", nullptr));
+        label_graphtraversal->setText(QCoreApplication::translate("Traversal", "4 > 5 > 2 > 3 > 22 > 23 > 54 > 53 > 2 > 323 > 2322 > 2", nullptr));
+        label_traversalquickinfo->setText(QCoreApplication::translate("Traversal", "Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. It starts at the tree root (or some arbitrary node of a graph, sometimes referred to as a 'search key'), and explores all of the neighbor nodes at the present depth prior to moving on to the nodes at the next depth level.", nullptr));
     } // retranslateUi
 
 };
 
-namespace Ui{
+namespace Ui {
     class Traversal: public Ui_Traversal {};
 } // namespace Ui
 

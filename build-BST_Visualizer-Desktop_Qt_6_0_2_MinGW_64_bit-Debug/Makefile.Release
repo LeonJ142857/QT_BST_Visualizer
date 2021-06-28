@@ -1125,7 +1125,15 @@ release/mainwindow.o: ../BST_Visualizer/mainwindow.cpp ../BST_Visualizer/mainwin
 		../BST_Visualizer/user.h \
 		D:/Qt/6.0.2/mingw81_64/include/QtCore/QTimer \
 		D:/Qt/6.0.2/mingw81_64/include/QtCore/qtimer.h \
-		D:/Qt/6.0.2/mingw81_64/include/QtCore/qbasictimer.h
+		D:/Qt/6.0.2/mingw81_64/include/QtCore/qbasictimer.h \
+		D:/Qt/6.0.2/mingw81_64/include/QtWidgets/QFileDialog \
+		D:/Qt/6.0.2/mingw81_64/include/QtWidgets/qfiledialog.h \
+		D:/Qt/6.0.2/mingw81_64/include/QtCore/qdir.h \
+		D:/Qt/6.0.2/mingw81_64/include/QtCore/qfile.h \
+		D:/Qt/6.0.2/mingw81_64/include/QtCore/qfiledevice.h \
+		D:/Qt/6.0.2/mingw81_64/include/QtCore/qfileinfo.h \
+		D:/Qt/6.0.2/mingw81_64/include/QtCore/qdatetime.h \
+		D:/Qt/6.0.2/mingw81_64/include/QtCore/qcalendar.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o ..\BST_Visualizer\mainwindow.cpp
 
 release/traversal.o: ../BST_Visualizer/traversal.cpp ../BST_Visualizer/traversal.h \
