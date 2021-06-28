@@ -258,8 +258,11 @@ void MainWindow::on_BFTButton_2_clicked(){
 
     int nodes = input.toInt();
     if(nodes > 50){
-        QMessageBox::information(this, "Information", "The maximum number of nodes in auto-generated tree is 50. "
-                                 "You can manually add more nodes if you want after a tree has been generated.");
+        QMessageBox::information(this,
+                                 "Information",
+                                 "The maximum number of nodes in auto-generated tree is 50. "
+                                 "You can manually add more nodes if you want after a tree "
+                                 "has been generated.");
         return;
     }
 
